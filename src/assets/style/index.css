@@ -1,0 +1,29 @@
+.label {
+    font-family: DIN Pro;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0em;
+}
+
+.label:hover {
+    color: #FF9846;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.grey_label {
+    font-family: DIN Pro;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 17px;
+    letter-spacing: 0em;
+    color: #A4ACAD;
+}
+
+.bold_link {
+    font-weight: 600 !important;
+    line-height: 22, 34px !important;
+}
