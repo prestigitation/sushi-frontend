@@ -1,10 +1,10 @@
 <template>
   <div class="page_container">
-    <SidePanel :categories="categories" />
+    <SidePanel />
     <div class="page_content">
       <Header />
       <div class="page_inner">
-        <router-view :categories="categories" />
+        <router-view />
         <Footer />
       </div>
     </div>
@@ -30,15 +30,6 @@ export default {
     CartSidePanel,
     Footer
   },
-  data() {
-    return {
-      categories: null
-    }
-  },
-  async mounted() {
-    let {data} = await axios.get('category');
-    this.categories = data
-  }
 }
 </script>
 
@@ -55,7 +46,8 @@ export default {
     background: #F2F2F2;
   }
   .page_inner {
-    width: 90%;
+    /*width: 90%;*/
+    max-width: 950px;
     margin-left: auto;
     margin-right: auto;
   }

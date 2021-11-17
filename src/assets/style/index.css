@@ -27,3 +27,7 @@
     font-weight: 600 !important;
     line-height: 22, 34px !important;
 }
+
+.router_link {
+    text-decoration: none;
+}
