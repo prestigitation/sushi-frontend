@@ -1,12 +1,13 @@
 <template>
 <div class="side_panel">
     <div class="side_panel__container">
-        <img class="logo_image" src="../../../public/img/logo.png">
-        <span class="logo_sign"> ROMSEM </span>
+        <img class="logo_image" src="../../../public/img/logo.png" @click.prevent="$router.push('/')">
+        <span class="logo_sign" @click.prevent="$router.push('/')"> ROMSEM </span>
         <div class="logo_line" />
         <div class="side_panel_categories" v-for="category in categories" :key="category.id">
             <img v-if="category.preview_image" class="category_image" :src="category.preview_image">
             <span v-if="category.preview_image" 
+                @click.prevent="$router.push(`/category/${category.slug}`)"
                 :class="{'category_empty_preview': !category.preview_image}" 
                 class="category_text label">{{category.name}}
             </span>
@@ -75,6 +76,9 @@ export default {
     .logo_image {
         width: 130px;
         height: 130px;
+    }
+    .logo_sign,.logo_image:hover {
+        cursor: pointer;
     }
 
     .category_text {

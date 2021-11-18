@@ -1,14 +1,34 @@
 <template>
   <div class="index_page">
     <div class="carousel">
-      {{carousel_data}}
-      <VueSlickCarousel :arrows="false" :dots="true">
-        <div class="carousel_image">1</div>
-        <div class="carousel_image">2</div>
-        <div class="carousel_image">3</div>
-        <div class="carousel_image">4</div>
-        <div class="carousel_image">5</div>
+      <div v-if="carousel_data.length" class="carousel__container">
+        <VueSlickCarousel :arrows="false" :dots="true">
+          <div class="carousel_image" v-for="banner in carousel_data" :key="banner.id">
+                <div class="carousel_picture_wrapper">
+                <img class="carousel_main_picture" :src="banner.image_path">
+              </div>
+              <div class="carousel_text_wrapper">
+                <div class="carousel_text_block">
+                  <div>
+                    <div class="carousel_text_head">"{{banner.name}}"</div>
+                    <div class="carousel_text_count count">{{banner.gram_count}} грамм {{banner.pieces_count}} кусочков</div>
+                  </div>
+                  <div>
+                    <div class="carousel_text_price">
+                      <div v-if="banner.discount_price">{{banner.discount_price}} COM</div>
+                      <div class="price" v-if="banner.price">{{banner.price}} COM</div>
+                    </div>
+                  </div>
+                  <div class="carousel_button_wrapper" @click.prevent="$router.push(`/product/${banner.slug}`)">
+                    <div class="carousel_product_button">
+                      Хочу!
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
       </VueSlickCarousel>
+      </div>
     </div>
 
     <div class="banner_grid">
@@ -43,7 +63,11 @@
     <SortButtonList :selectedCategory="selectedCategory" 
                     @changeCurrentSortCategory="changeCurrentSortCategory"
     />
-    {{product_list_data}}
+    <div class="product_cards">
+      <div v-for="product in product_cards" :key="product.id">
+        <ProductCard :product="product" />
+      </div>
+    </div>
 
   </div>
 </template>
@@ -51,6 +75,7 @@
 <script>
 import VueSlickCarousel from 'vue-slick-carousel'
 import SortButtonList from './SortButtonList.vue'
+import ProductCard from './ProductCard.vue'
 
 import 'vue-slick-carousel/dist/vue-slick-carousel.css'
 import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
@@ -59,6 +84,7 @@ export default {
   components: {
     VueSlickCarousel,
     SortButtonList,
+    ProductCard
   },
   data() {
     return {
@@ -66,30 +92,45 @@ export default {
       grid_data: null,
       carousel_data: null,
       product_list_data: null,
+      product_card_start: 0, // индекс, с которого начинается разбивка карточек товара
+      product_card_step: 3,
+      product_card_end: 3,
     }
   },
   async mounted() {
     await this.axios.get('category/grid_banner').then(({data}) => { if(data) { this.grid_data = data }} )
-    /*await this.axios.get("product/index_page/", {
+    await this.axios.get("product/index_page/products_list", {
         params: {
           filter: this.selectedCategory
         }
       }).then((({data}) => {
         if(data) {
-          this.carousel_data = data.carousel
           this.product_list_data = data.products
         }
-      }))*/
+      }))
+    await this.axios.get("product/index_page/carousel").then((({data}) => {
+        if(data) {
+          this.carousel_data = data.carousel
+        }
+      }))
   },
   methods: {
     changeCurrentSortCategory(category) {
       this.selectedCategory = category
     },
   },
+  computed: {
+    product_cards() {
+      return this.product_list_data.slice(this.product_card_start, this.product_card_end)
+    }
+  }
 }
 </script>
 
 <style scoped>
+  .carousel {
+    margin-top: 20px;
+  }
   .main_grid {
     display: grid;
     grid-template-columns: 470px 224px 224px;
@@ -130,6 +171,55 @@ export default {
   .carousel_image {
     height: 470px;
     width: 100%;
+    background: white;
+    display: flex !important;
+  }
+  .carousel_main_picture {
+    height: 210px;
+    width: 210px;
+    position: relative;
+    bottom: 0;
+  }
+  .carousel_picture_wrapper {
+    align-items: flex-end;
+    display: flex;
+  }
+  .carousel_text_wrapper {
+    justify-content: flex-end;
+    display: flex;
+    width: inherit;
+    text-align: end;
+  }
+  .carousel_text_block {
+    margin: 20px 20px 0px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .carousel_text_price {
+    margin: 100px 0 0 0;
+  }
+  .carousel_text_count {
+    margin-top: 20px;
+  }
+  .carousel_text_head {
+    font-family: DIN Pro;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: 0em;
+  }
+  .carousel_button_wrapper {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .product_cards {
+    margin: 20px 0 20px 10px;
+    max-height: 397px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 20px;
   }
   .banner_grid {
     margin-top: 30px;
