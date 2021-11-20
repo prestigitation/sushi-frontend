@@ -21,7 +21,10 @@ import axios from 'axios'
 
 import './assets/style/index.css'
 
-axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
+axios.defaults.baseURL = 'http://127.0.0.1:80/api/';
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.common["Access-Control-Allow-Methods"] = "GET, POST, PATCH, PUT, DELETE, OPTIONS",
+axios.defaults.headers.common["Access-Control-Allow-Headers"] = "Origin, Content-Type, X-Auth-Token"
 export default {
   name: 'App',
   components: {
@@ -54,6 +57,9 @@ export default {
   @media screen and (max-width:768px) {
     .page_inner {
       max-width: 100%;
+    }
+    body {
+      overflow-x: hidden;
     }
   }
 </style>

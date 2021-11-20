@@ -64,5 +64,8 @@ export default {
             justify-content: flex-end;
             width: 10vh;
         }
+        .auth_link {
+            display: none;
+        }
     }
 </style>

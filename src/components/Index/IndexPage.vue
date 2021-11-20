@@ -40,7 +40,7 @@
           </router-link>
         </div>
         <div v-for="category in grid_data.small_images" :key="category.id">
-          <div class="listing_first"> 
+          <div class="listing_first" v-if="category.image"> 
             <router-link class="router_link" :to='"/category/"+ category.slug'>
               <img :src="category.image">
               <span class="grid_text">{{category.name}}</span>
@@ -50,7 +50,7 @@
       </div>
       <div class="sub_grid">
         <div v-for="category in grid_data.large_images.slice(1)" :key="category.id">
-          <div class="listing_second">
+          <div class="listing_second" v-if="category.image">
             <router-link class="router_link" :to='"/category/"+ category.slug'>
               <img :src="category.image">
               <span class="grid_text">{{category.name}}</span>
@@ -60,13 +60,33 @@
       </div>
     </div>
 
+    <div class="mobile_banner_grid">
+      <div class="mobile_grid">1</div>
+      <div class="mobile_grid">2</div>
+      <div class="mobile_grid">3</div>
+      <div class="mobile_grid">4</div>
+      <div class="mobile_grid">5</div>
+      <div class="mobile_grid">6</div>
+      <div class="mobile_grid">7</div>
+      <div class="mobile_grid">8</div>
+      <div class="mobile_grid">9</div>
+      <div class="mobile_grid">10</div>
+      <div class="mobile_grid">11</div>
+      <div class="mobile_grid">12</div>
+      <div class="mobile_grid">13</div>
+    </div>
     <SortButtonList :selectedCategory="selectedCategory" 
                     @changeCurrentSortCategory="changeCurrentSortCategory"
     />
-    <div class="product_cards">
-      <div v-for="product in product_cards" :key="product.id">
-        <ProductCard :product="product" />
+
+    <div class="product_cards_block">
+      <div class="product_card_changer left_changer">&lt;</div>
+      <div class="product_cards">
+        <div v-for="product in product_cards" :key="product.id">
+          <ProductCard :product="product" />
+        </div>
       </div>
+      <div class="product_card_changer right_changer">&gt;</div>
     </div>
 
   </div>
@@ -215,7 +235,7 @@ export default {
     justify-content: flex-end;
   }
   .product_cards {
-    margin: 20px 0 20px 10px;
+    margin: 20px 10px 20px 10px;
     max-height: 397px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -224,9 +244,57 @@ export default {
   .banner_grid {
     margin-top: 30px;
   }
+  .product_cards_block {
+    display: flex;
+    align-items: center;
+  }
+  .product_card_changer {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background: #111111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+  } 
+  .right_changer {
+    margin-left: auto;
+  }
+  .left_changer {
+    margin-right: auto;
+  }
+  .mobile_banner_grid {
+    display: none;
+  }
   #grid_first_block {
     width: 470px;
     height: 200px;
+  }
+  @media screen and (max-width: 768px){
+    .carousel,
+    .main_grid,
+    .sub_grid,
+    .product_sort_buttons,
+    .product_cards_block {
+      display: none;
+    }
+    .mobile_banner_grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: "a a"; 
+            ;
+      grid-gap: 15px;
+    }
+    .mobile_grid {
+      width: 50px;
+      height: 50px;
+      background: yellow;
+    }
+    .mobile_banner_grid:nth-child(2+n) {
+      grid-template-rows: "a"; 
+    }
   }
 </style>
 <style>

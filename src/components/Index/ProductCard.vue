@@ -28,7 +28,7 @@ export default {
 <style scoped>
 .product_card {
     height: 397px;
-    width: 289px;
+    width: 260px;
     background: rgb(255, 255, 255);
 }
 .product_image_container {
