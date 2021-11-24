@@ -61,33 +61,18 @@
     </div>
 
     <div class="mobile_banner_grid">
-      <div class="mobile_grid">1</div>
-      <div class="mobile_grid">2</div>
-      <div class="mobile_grid">3</div>
-      <div class="mobile_grid">4</div>
-      <div class="mobile_grid">5</div>
-      <div class="mobile_grid">6</div>
-      <div class="mobile_grid">7</div>
-      <div class="mobile_grid">8</div>
-      <div class="mobile_grid">9</div>
-      <div class="mobile_grid">10</div>
-      <div class="mobile_grid">11</div>
-      <div class="mobile_grid">12</div>
-      <div class="mobile_grid">13</div>
+      <div class="mobile_banner_image_container" v-for="category in grid_data.large_images.concat(grid_data.small_images)" :key="category.id">
+        <div class="mobile_grid">
+          <span class="grid_text mobile_grid_text">{{category.name}}</span>
+          <img @click.prevent="$router.push(`/category/${category.slug}`)" class="mobile_grid" :src="category.image">
+        </div>
+      </div>
     </div>
     <SortButtonList :selectedCategory="selectedCategory" 
                     @changeCurrentSortCategory="changeCurrentSortCategory"
     />
 
-    <div class="product_cards_block">
-      <div class="product_card_changer left_changer">&lt;</div>
-      <div class="product_cards">
-        <div v-for="product in product_cards" :key="product.id">
-          <ProductCard :product="product" />
-        </div>
-      </div>
-      <div class="product_card_changer right_changer">&gt;</div>
-    </div>
+    <ProductSlider :products="product_list_data" />
 
   </div>
 </template>
@@ -95,7 +80,7 @@
 <script>
 import VueSlickCarousel from 'vue-slick-carousel'
 import SortButtonList from './SortButtonList.vue'
-import ProductCard from './ProductCard.vue'
+import ProductSlider from '../Product/ProductSlider.vue'
 
 import 'vue-slick-carousel/dist/vue-slick-carousel.css'
 import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
@@ -104,7 +89,7 @@ export default {
   components: {
     VueSlickCarousel,
     SortButtonList,
-    ProductCard
+    ProductSlider,
   },
   data() {
     return {
@@ -112,9 +97,6 @@ export default {
       grid_data: null,
       carousel_data: null,
       product_list_data: null,
-      product_card_start: 0, // индекс, с которого начинается разбивка карточек товара
-      product_card_step: 3,
-      product_card_end: 3,
     }
   },
   async mounted() {
@@ -139,11 +121,6 @@ export default {
       this.selectedCategory = category
     },
   },
-  computed: {
-    product_cards() {
-      return this.product_list_data.slice(this.product_card_start, this.product_card_end)
-    }
-  }
 }
 </script>
 
@@ -244,27 +221,6 @@ export default {
   .banner_grid {
     margin-top: 30px;
   }
-  .product_cards_block {
-    display: flex;
-    align-items: center;
-  }
-  .product_card_changer {
-    width: 60px;
-    height: 60px;
-    border-radius: 30px;
-    background: #111111;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    cursor: pointer;
-  } 
-  .right_changer {
-    margin-left: auto;
-  }
-  .left_changer {
-    margin-right: auto;
-  }
   .mobile_banner_grid {
     display: none;
   }
@@ -281,19 +237,25 @@ export default {
       display: none;
     }
     .mobile_banner_grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: "a a"; 
-            ;
-      grid-gap: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 50px;
     }
     .mobile_grid {
-      width: 50px;
-      height: 50px;
-      background: yellow;
+      height: 157px;
+      margin: 10px 0px 10px 0px;
     }
-    .mobile_banner_grid:nth-child(2+n) {
-      grid-template-rows: "a"; 
+    .mobile_banner_image_container:nth-child(-n+2) .mobile_grid,
+    .mobile_banner_image_container:nth-child(n+4) .mobile_grid{
+      width: 157px;
+      margin: 0 5px 0 5px;
+    }
+    .mobile_banner_image_container:nth-child(3) .mobile_grid {
+      width: 95%;
+      margin: 10px auto 30px auto !important;
+    }
+    .mobile_grid_text {
+      top: 95% !important;
     }
   }
 </style>

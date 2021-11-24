@@ -28,7 +28,16 @@ export default {
             let formData = new FormData();
             formData.append('email', this.email)
             formData.append('password', this.password)
-            this.axios.post('/auth/login', formData).then(response => console.log(response)).catch(error => console.log(error))
+            this.axios.post('/auth/login', formData).then(({data}) => {
+                if(data.access_token) {
+                    localStorage.setItem('access_token', data.access_token)
+                    this.$store.dispatch('auth_login', {
+                        name: data.name,
+                        id: data.id,
+                    })
+                    this.$router.push('/')
+                }
+            }).catch(error => console.log(error))
         }
     }
 }

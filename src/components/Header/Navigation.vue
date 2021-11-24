@@ -7,14 +7,19 @@
     <div class="header_info">
         <div class="label">Отзывы</div>
         <div class="label">Доставка и оплата</div>
-            <router-link class="router_link auth_link" to="/login">
+            <router-link v-if="getUser == {} " class="router_link auth_link" to="/login">
                 <div class="label">
                     Вход
                 </div>
             </router-link>
-            <router-link class="router_link auth_link" to="/register">
+            <router-link v-if="getUser == {} " class="router_link auth_link" to="/register">
                 <div class="label">
                     Регистрация
+                </div>
+            </router-link>
+            <router-link v-if="getUser != {} " class="router_link auth_link" :to="`/users/${getUser.id}`">
+                <div class="label">
+                    {{getUser.name}}
                 </div>
             </router-link>
         <img class="search_image" src="../../../public/img/Search.svg">
@@ -23,8 +28,13 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
-
+    computed: {
+        ...mapGetters([
+            'getUser'
+        ])
+    }
 }
 </script>
 

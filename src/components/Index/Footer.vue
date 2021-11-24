@@ -1,5 +1,6 @@
 <template>
-<div class="footer_container">
+<div>
+    <div class="footer_container">
     <span class="footer_title">Заказать суши в Бишкеке</span>
     <div class="footer_text">
         <p>Ресторан “Суши и Лапша” предлагаем своим клиентам самые вкусные суши с доставкой на дом, приготовленные по классическим и адаптированным к европейской аудитории рецептам, а также собственным наработкам наших поваров. Мы ценим время наших клиентов, поэтому вы можете заказать суши в Харькове с доставкой на дом или в офис.
@@ -35,7 +36,8 @@
             <span class="grey_label">Адрес:Бакаева 126</span>
         </div>
     </div>
-    <div class="mobile_footer">
+</div>
+<div class="mobile_footer">
         <div class="mobile_footer_block">
             <img class="social_network_image" src="../../../public/img/Menu.svg" alt="menu">
             <span class="mobile_footer_text_sign">Меню</span>
@@ -47,9 +49,9 @@
         <div class="mobile_footer_block">
             <img class="social_network_image" src="../../../public/img/Replies.svg" alt="cart">
             <span class="mobile_footer_text_sign">Отзывы</span>
-        </div>
     </div>
 </div>  
+</div>
 </template>
 
 <script>
@@ -134,6 +136,11 @@ export default {
     }
 
     @media screen and (max-width: 768px) {
+        .footer_container {
+            max-width: 330px;
+            margin-left: auto;
+            margin-right: auto;
+        }
         .footer_sections {
             display: flex;
             flex-direction: column;
@@ -173,6 +180,7 @@ export default {
             position: fixed;
             bottom: 0;
             width: 100%;
+            max-width: unset !important;
             height: 70px;
             background: white;
             z-index: 2;

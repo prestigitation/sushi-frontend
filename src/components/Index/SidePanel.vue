@@ -28,11 +28,11 @@ export default {
     async mounted() {
         let {data} = await axios.get('category');
         this.categories = data
-        await axios.get('product/index_page').then((({data}) => {
+        /*await axios.get('product/index_page').then((({data}) => {
             if(data) {
                 this.carousel = data
             }
-        }))
+        }))*/
     }
 }
 </script>

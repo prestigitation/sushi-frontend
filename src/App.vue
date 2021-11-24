@@ -5,8 +5,8 @@
       <Header />
       <div class="page_inner">
         <router-view />
-        <Footer />
       </div>
+      <Footer />
     </div>
     <CartSidePanel />
   </div>
@@ -20,11 +20,29 @@ import Footer from './components/Index/Footer.vue'
 import axios from 'axios'
 
 import './assets/style/index.css'
+import 'vue-horizontal-scroll/dist/vue-horizontal-scroll.css'
 
 axios.defaults.baseURL = 'http://127.0.0.1:80/api/';
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.common["Access-Control-Allow-Methods"] = "GET, POST, PATCH, PUT, DELETE, OPTIONS",
 axios.defaults.headers.common["Access-Control-Allow-Headers"] = "Origin, Content-Type, X-Auth-Token"
+axios.interceptors.response.use(config => {
+  let access_token = localStorage.getItem("access_token")
+  if(access_token) {
+    config.headers.authorization = `Bearer ${access_token}`
+  }
+  return config
+},error => {
+  if(error.response.data.message == 'Token has expired') {
+    return axios.post('auth/refresh', {}, {
+      headers: {
+        'authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    }).then(res => {
+      localStorage.setItem('access_token', res.data.access_token);
+    })
+  }
+})
 export default {
   name: 'App',
   components: {
