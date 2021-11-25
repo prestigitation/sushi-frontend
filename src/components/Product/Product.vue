@@ -24,6 +24,7 @@
                         :show_mobile_arrows="false"
                         :show_add_button="true"
                         :no_data="false"
+                        :on_product_page="true"
                     />
                 </horizontal-scroll>
             </div>
@@ -32,6 +33,8 @@
                     :products="product_data.recommendations" 
                     :show_mobile_arrows="true"
                     :no_data="false"
+                    :on_product_page="true"
+                    :hide_desktop_arrows="true"
                 />
             </div>
         </div>
@@ -77,6 +80,11 @@ export default {
     align-items: center;
     gap: 10px;
 }
+.product_recommendations {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
 .product_recommendations_header {
     display: flex;
     justify-content: center;
@@ -96,7 +104,7 @@ export default {
     flex-basis: 50% !important;
 }
 .product_page_info_container {
-    padding: 20px 20px 0 40px;
+    padding: 20px 20px 0 20px;
     flex-basis: 50% !important;
     display: flex !important;
     flex-direction: column !important;
@@ -149,6 +157,11 @@ export default {
 }
 .desktop_scroll {
     display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.product_recommendations {
+    margin-bottom: 20px;
 }
 @media screen and (max-width: 768px){
     .product_card {

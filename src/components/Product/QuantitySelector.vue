@@ -10,7 +10,7 @@
 export default {
     data() {
         return {
-            count: 0,
+            count: 1,
         }
     },
     props: {
@@ -25,7 +25,7 @@ export default {
     },
     methods: {
         decrementCount() {
-            if(this.count > 0) {
+            if(this.count > 2) {
                 this.count -= 1
             }
         },

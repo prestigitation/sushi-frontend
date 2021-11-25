@@ -66,7 +66,8 @@ export default {
     width: 100%;
     background: #F2F2F2;
   }
-  .page_inner {
+  .page_inner,
+  .footer_container {
     /*width: 90%;*/
     max-width: 950px;
     margin-left: auto;

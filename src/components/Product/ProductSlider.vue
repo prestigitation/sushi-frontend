@@ -1,7 +1,7 @@
 <template>
 <div class="product_cards_block" v-if="products.length">
     <div v-if="show_mobile_arrows" 
-        :class="['product_card_changer', 'left_changer', {hide_mobile_arrows: !show_mobile_arrows}]" 
+        :class="['product_card_changer', 'left_changer', {hide_mobile_arrows: !show_mobile_arrows, hide_desktop_arrows: show_desktop_arrows}]" 
         @click.prevent="setProductsSlider('left')"
         >&lt;
     </div>
@@ -13,6 +13,8 @@
                 :show_quantity_selector="false" 
                 :show_consists="false"
                 :no_data="no_data" 
+                :on_product_page="on_product_page"
+                :is_recommendation="true"
             >
                 <div slot="button" v-if="show_add_button">
                     <quantity-selector
@@ -25,7 +27,7 @@
     </div>
     
     <div v-if="show_mobile_arrows" 
-        :class="['product_card_changer', 'right_changer', {hide_mobile_arrows: !show_mobile_arrows}]" 
+        :class="['product_card_changer', 'right_changer', {hide_mobile_arrows: !show_mobile_arrows, hide_desktop_arrows: show_desktop_arrows}]" 
         @click="setProductsSlider('right')"
         >&gt;
     </div>
@@ -57,6 +59,14 @@ export default {
         show_add_button: {
             type: Boolean,
             default: () => false
+        },
+        on_product_page: {
+            type: Boolean,
+            default: () => false
+        },
+        show_desktop_arrows: {
+            type: Boolean,
+            default: () => true
         }
     },
     data() {
@@ -119,6 +129,9 @@ export default {
 .product_cards {
     display: flex;
     gap: 20px;
+}
+.hide_desktop_arrows {
+    display: none !important;
 }
 @media screen and (max-width: 768px){
     .hide_mobile_arrows {

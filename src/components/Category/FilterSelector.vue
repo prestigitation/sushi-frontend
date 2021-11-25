@@ -1,7 +1,7 @@
 <template>
 <div class="filter">
     <div v-for="filter in filters" :key="filter.name">
-        <div class="filter_name" @click.prevent="sortData(filter)">{{filter.name}}</div>
+        <div class="filter_name filter_pad" @click.prevent="sortData(filter)">{{filter.name}}</div>
     </div>
 </div>
 </template>
@@ -83,5 +83,9 @@ export default {
     font-weight: 400;
     line-height: 22px;
     letter-spacing: 0em;
+}
+.filter_pad {
+    padding-left: 10px;
+    padding-top: 6px;
 }
 </style>

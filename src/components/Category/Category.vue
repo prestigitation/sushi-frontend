@@ -6,20 +6,24 @@
             <span class="category_header_name"> {{ category_data.category.name }} </span>
         </div>
         <div class="desktop_filter_selector">
-            <div class="grey_label">Сортировка</div>
-            <div class="label">
-                <span v-if="!selected_desktop_filter">По умолчанию</span>
-                <span v-else>{{selected_desktop_filter}}</span>
+            <div class="grey_label filter_pad">Сортировка</div>
+            <div class="label desktop_filter_grid">
+                <span v-if="!selected_desktop_filter" class="filter_pad">По умолчанию</span>
+                <span v-else class="filter_pad">{{selected_desktop_filter}}</span>
                 <img class="category_desktop_dropdown" src="../../../public/img/CategoryDropdown.svg" 
                     @click.prevent="is_desktop_sort_selector_opened = !is_desktop_sort_selector_opened"
                 >
             </div>
+            <!--<div v-if="is_desktop_sort_selector_opened" class="desktop_filter_selector">
+                <FilterSelector
+                :data="category_data.products"
+                @sortData="setSortedData" />
+            </div> -->
+            <FilterSelector v-if="is_desktop_sort_selector_opened"
+                :data="category_data.products"
+                @sortData="setSortedData" />
         </div>
-        <div v-if="is_desktop_sort_selector_opened" class="desktop_filter_selector">
-            <FilterSelector
-            :data="category_data.products"
-            @sortData="setSortedData" />
-        </div>
+        
     </div>
     <div class="category_filter_selector">
         <div class="category_filter_content">
@@ -98,6 +102,15 @@ export default {
 <style scoped>
 .desktop_filter_selector {
     display: block;
+    background: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    width: 205px;
+}
+.filter {
+    position: absolute;
+    background: white;
+    width: 205px;
 }
 .category_header {
     margin-top: 10px;
@@ -130,11 +143,19 @@ export default {
     margin-bottom: 30px;
 }
 .category_desktop_dropdown {
-    margin-left: 35px;
+    margin-right: 5px;
 }
 .category_header_left {
     display: flex;
     align-items: center;
+}
+.filter_pad,.filter_name {
+    padding-left: 10px;
+    padding-top: 6px;
+}
+.desktop_filter_grid {
+    display: flex;
+    justify-content: space-between;
 }
 @media screen and (max-width: 768px) {
     .category_header {

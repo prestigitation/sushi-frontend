@@ -1,14 +1,14 @@
 <template>
-<div v-if="product != {}" :class="['product_card', {product_page_card: on_product_page} ]" @click.prevent="$router.push(`/product/${product.slug}`)">
+<div v-if="product != {}" :class="['product_card', {product_page_card: on_product_page, product_recommendations_card: is_recommendation} ]" @click.prevent="navigateToProduct">
     <div :class="['product_image_container', {product_page_image_container: on_product_page}]">
         <img class="product_image" :src="product.image_path">
     </div>
     <div :class="['product_info_container', {product_page_info_container: on_product_page}]">
         <div :class="['product_info', {product_page_info: on_product_page}]">
-            <div    :class="['product_card_price', {product_page_price: on_product_page, product_mobile_align: no_data}]" 
-                    @click.prevent="navigateToProduct()">
+            <div    :class="['product_card_price', {product_page_price: on_product_page, product_mobile_align: no_data, recommendation_text: is_recommendation}]" 
+                    @click.prevent="navigateToProduct">
                 <span v-if="no_data">{{product.name | capitalize}}</span>
-                <span v-else> {{product.name}}</span>
+                <span v-else :class="[{recommendation_text: is_recommendation}]"> {{product.name}}</span>
             </div>
             <div class="product_card_count">
                 <div 
@@ -18,24 +18,25 @@
             </div>
         </div>
         <hr class="product_split_line">
-        <div :class="['product_footer', {product_page_footer: on_product_page, mobile_hide: no_data}]">
+        <div :class="['product_footer', {product_page_footer: on_product_page, mobile_hide: no_data, recommendation_footer: is_recommendation}]">
             <span 
             :class="['product_price', 'price', {product_footer_price: on_product_page, 
-                    product_footer_row: !on_product_page}]"
+                    product_footer_row: !on_product_page,
+                    recommendation_price: is_recommendation}]"
             >
                 <span>{{product.price}} COM</span>
                 <span class="product_quantity_selector" v-if="show_quantity_selector">
                     <QuantitySelector @changeProductQuantity="setProductQuantity" />
                 </span> 
             </span>
-            <div class="product_page_consists" v-if="on_product_page && product.consists.length">
+            <div class="product_page_consists" v-show="on_product_page && product.consists && product.consists.length">
                 <div class="consists_header">Состав</div>
-                <span class="consists_name"  v-for="consist in product.consists" :key="consist.id">
+                <span :class="consists_name"  v-for="consist in product.consists" :key="consist.id">
                     {{consist.name}} <span v-if="consist.id != product.consists.length">, </span>
                 </span>
             </div>
             <slot name="button">
-                <span class="carousel_product_button product_button" @click.prevent="handleButtonClick">Хочу!</span>
+                <span :class="['carousel_product_button', 'product_button', {recommendation_button: is_recommendation}]" @click.prevent="handleButtonClick">Хочу!</span>
             </slot>
         </div>
         <div class="mobile_product_consists" v-if="show_mobile_consists && product.consists.length">
@@ -87,16 +88,22 @@ export default {
         no_data: {
             type: Boolean,
             default: () => false
+        },
+        is_recommendation: {
+            type: Boolean,
+            default: () => false
         }
     },
     methods: {
         setProductQuantity() { //val
             //TODO:
         },
-        navigate_to_product() {
-            if(!this.no_data && !this.on_product_page) {
+        navigateToProduct() {
+            if(!this.no_data && !this.on_product_page) { // перейти на страницу товара
                 this.$router.push(`/product/${this.product.slug}`)
-            }
+            } else { // если на странице товара - добавить в корзину и зайти туда
+                this.$store.dispatch('cart_add_product', this.product)
+            }   
         },
         handleButtonClick() {
             if(!this.no_data) {
@@ -118,6 +125,10 @@ export default {
 <style scoped>
 .mobile_product_consists {
     display: none;
+}
+.recommendation_text {
+    line-height: unset !important;
+    font-size: unset !important;
 }
 .product_suggestions {
     display: none;
@@ -176,6 +187,27 @@ export default {
     border-radius: 5px;
 }
 
+.product_recommendations_card {
+    width: 289px !important;
+    flex-direction: column;
+}
+
+.recommendation_text {
+    font-size: 18px !important;
+    line-height: unset !important;
+}
+.recommendation_footer {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+.recommendation_price {
+    margin: unset !important;
+}
+.recommendation_button {
+    width: 140px !important;
+}
+
 @media screen and (max-width: 768px) {
     .product_mobile_align {
         text-align: center !important;
@@ -193,7 +225,7 @@ export default {
         border-radius: 10px;
     }
     .product_page_info_container {
-        padding: 20px 20px 0px 20px !important;
+        padding: 20px 0px 0px 10px !important;
     }
     .product_quantity_selector,
     .product_page_consists {
@@ -223,7 +255,8 @@ export default {
         letter-spacing: 0em;
     }
     .product_price {
-        margin: 0 10px 0 10px;
+        /*margin: 0 10px 0 10px;*/
+        margin: 0 5px 0 5px;
         font-family: DIN Pro;
         font-size: 20px;
         font-style: normal;
