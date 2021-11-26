@@ -1,5 +1,9 @@
 <template>
-<div v-if="product != {}" :class="['product_card', {product_page_card: on_product_page, product_recommendations_card: is_recommendation} ]" @click.prevent="navigateToProduct">
+<div v-if="product != {}" 
+:class="['product_card', {
+    product_page_card: on_product_page, 
+    product_recommendations_card: is_recommendation,
+    }]">
     <div :class="['product_image_container', {product_page_image_container: on_product_page}]">
         <img class="product_image" :src="product.image_path">
     </div>
@@ -12,12 +16,14 @@
             </div>
             <div class="product_card_count">
                 <div 
-                :class="['carousel_text_count', 'grey_label', {mobile_hide: no_data} ]">
+                :class="['carousel_text_count', 'grey_label', {
+                    mobile_hide: no_data,
+                    }]">
                     {{product.gram_count}} грамм {{product.pieces_count}} кусочков
                 </div>
             </div>
         </div>
-        <hr class="product_split_line">
+        <hr class="product_split_line" v-if="show_line">
         <div :class="['product_footer', {product_page_footer: on_product_page, mobile_hide: no_data, recommendation_footer: is_recommendation}]">
             <span 
             :class="['product_price', 'price', {product_footer_price: on_product_page, 
@@ -36,7 +42,9 @@
                 </span>
             </div>
             <slot name="button">
-                <span :class="['carousel_product_button', 'product_button', {recommendation_button: is_recommendation}]" @click.prevent="handleButtonClick">Хочу!</span>
+                <span :class="['carousel_product_button', 'product_button', {
+                    recommendation_button: is_recommendation,
+                    }]" @click.prevent="navigateToProduct">Хочу!</span>
             </slot>
         </div>
         <div class="mobile_product_consists" v-if="show_mobile_consists && product.consists.length">
@@ -55,7 +63,9 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import HorizontalScroll from 'vue-horizontal-scroll'
+import { mapGetters } from 'vuex'
 import ProductSlider from '../Product/ProductSlider.vue'
 import QuantitySelector from '../Product/QuantitySelector.vue'
 export default {
@@ -92,21 +102,60 @@ export default {
         is_recommendation: {
             type: Boolean,
             default: () => false
+        },
+        on_click_add_to_cart: {
+            type: Boolean,
+            default: () => false
+        },
+        is_cart_side: {
+            type: Boolean,
+            default: () => false
+        },
+        show_line: {
+            type: Boolean,
+            default: () => true
+        }
+    },
+    data() {
+        return {
+            quantity: 1,
         }
     },
     methods: {
-        setProductQuantity() { //val
-            //TODO:
+        setProductQuantity(count) {
+            this.quantity = count
+        },
+        filterWithoutQuantity(obj) {
+            let objectEntries = Object.entries(obj)
+            let newObject = {}
+            objectEntries.forEach(entry => {
+                let key = entry[0]
+                let value = entry[1]
+                if(key != 'quantity' && key!= 'consists') {
+                    newObject[key] = value
+                }
+            })
+            return newObject
         },
         navigateToProduct() {
-            if(!this.no_data && !this.on_product_page) { // перейти на страницу товара
+            if(!this.no_data && !this.on_product_page && !this.on_click_add_to_cart) { // перейти на страницу товара
                 this.$router.push(`/product/${this.product.slug}`)
             } else { // если на странице товара - добавить в корзину и зайти туда
-                this.$store.dispatch('cart_add_product', this.product)
+                let cartHasExistingProduct
+                for(let i in this.getCart) {
+                    let cartProd = this.getCart[i]
+                    if(_.isEqual(this.filterWithoutQuantity(cartProd), this.filterWithoutQuantity(this.product))) {
+                        cartHasExistingProduct = true
+                        break
+                    } else cartHasExistingProduct = false
+                }
+                if(!cartHasExistingProduct) { //|| !this.getCart.length) {
+                    this.$store.dispatch('cart_add_product', {...this.product, quantity: this.quantity})
+                }
             }   
         },
         handleButtonClick() {
-            if(!this.no_data) {
+            if(!this.no_data && !this.on_click_add_to_cart) {
                 this.$router.push(`/product/${this.product.slug}`)
                 window.location.reload()
             }
@@ -118,11 +167,21 @@ export default {
             value = value.toString()
             return value.charAt(0).toUpperCase() + value.slice(1)
         }
+    },
+    computed: {
+        ...mapGetters([
+            'getCart'
+        ])
     }
 }
 </script>
 
 <style scoped>
+.cart_hide,
+.product_cart_part,
+.product_cart_consist {
+    display: none !important;
+}
 .mobile_product_consists {
     display: none;
 }
@@ -188,7 +247,7 @@ export default {
 }
 
 .product_recommendations_card {
-    width: 289px !important;
+    width: 260px !important;
     flex-direction: column;
 }
 
@@ -199,13 +258,13 @@ export default {
 .recommendation_footer {
     flex-direction: row !important;
     align-items: center !important;
-    justify-content: space-between !important;
+    justify-content: space-around !important;
 }
 .recommendation_price {
     margin: unset !important;
 }
 .recommendation_button {
-    width: 140px !important;
+    width: 121px !important;
 }
 
 @media screen and (max-width: 768px) {

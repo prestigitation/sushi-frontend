@@ -12,6 +12,7 @@
             :show_quantity_selector="true" 
             :on_product_page="true"
             :show_mobile_consists="true"
+            :on_click_add_to_cart="true"
         />
         <div class="product_recommendations">
             <div class="product_recommendations_header">

@@ -72,7 +72,7 @@
                     @changeCurrentSortCategory="changeCurrentSortCategory"
     />
 
-    <ProductSlider :products="product_list_data" />
+    <ProductSlider :on_product_page="false" :show_mobile_arrows="true" :show_desktop_arrows="true" :products="product_list_data" />
 
   </div>
 </template>

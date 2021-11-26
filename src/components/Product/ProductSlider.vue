@@ -1,7 +1,7 @@
 <template>
-<div class="product_cards_block" v-if="products.length">
+<div class="product_cards_block" v-if="products">
     <div v-if="show_mobile_arrows" 
-        :class="['product_card_changer', 'left_changer', {hide_mobile_arrows: !show_mobile_arrows, hide_desktop_arrows: show_desktop_arrows}]" 
+        :class="['product_card_changer', 'left_changer', {hide_mobile_arrows: !show_mobile_arrows, hide_desktop_arrows: !show_desktop_arrows}]" 
         @click.prevent="setProductsSlider('left')"
         >&lt;
     </div>
@@ -27,7 +27,7 @@
     </div>
     
     <div v-if="show_mobile_arrows" 
-        :class="['product_card_changer', 'right_changer', {hide_mobile_arrows: !show_mobile_arrows, hide_desktop_arrows: show_desktop_arrows}]" 
+        :class="['product_card_changer', 'right_changer', {hide_mobile_arrows: !show_mobile_arrows, hide_desktop_arrows: !show_desktop_arrows}]" 
         @click="setProductsSlider('right')"
         >&gt;
     </div>

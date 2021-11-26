@@ -29,20 +29,61 @@
             <div class="card_button" v-if="button">
                 Бесплатная доставка от 800 COM
             </div>
+            <div class="card_cart_container" v-if="cart">
+                <div class="cart_container_side" v-for="product in getCart" :key="product.id">
+                    <product-cart-card 
+                        :product="product" 
+                    />
+                </div>
+                <div class="cart_total">
+                    <span class="cart_total_price">{{totalPrice}}COM</span>
+                    <span class="carousel_product_button cart_button">Оформить заказ</span>
+                </div>
+            </div>
+
         </div>
 </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import ProductCartCard from '../Product/ProductCartCard.vue'
 export default {
+  components: { ProductCartCard },
     props: {
-        button: Boolean,
-        image: Boolean,
+        button: {
+            type: Boolean,
+            default: false
+        },
+        image: {
+            type: Boolean,
+            default: false
+        },
+        cart: {
+            type: Boolean,
+            default: false
+        }
+    },
+    computed: {
+        ...mapGetters(['getCart']),
+        totalPrice() {
+            let cart = this.getCart
+            let totalPrice = 0
+            cart.forEach((item) => totalPrice += item.quantity * item.price)
+            return totalPrice
+        }
     }
 }
 </script>
 
 <style scoped>
+    .card_cart_container .product_card {
+        display: flex;
+    }
+    .card_cart_container {
+        background: white;
+        margin-top: 10px !important;
+    }
     .cart_container {
         width: 430px;
     }
@@ -55,9 +96,16 @@ export default {
     .card_container {
         display: flex;
         justify-content: center;
+        margin: 20px 0 20px 0;
     }
     .card_head_text {
         margin-top: 20px;
+        font-family: DIN Pro;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 30px;
+        letter-spacing: 0em;
     }
     .card_text {
         margin-top: 10px;
@@ -92,6 +140,29 @@ export default {
         justify-content: center;
         align-items: center;
     }
+    .cart_total {
+        margin: 10px 0 0 0;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+    .cart_button {
+        margin: unset !important;
+        border-radius: 5px !important;
+        width: 180px !important;
+        height: 30px !important;
+        font-size: 18px !important;
+    }
+    .cart_total_price {
+        font-family: DIN Pro;
+        font-size: 22px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 30px;
+        letter-spacing: 0em;
+        margin-right: 15px;
+    }
+
 
     #center_image {
         margin-top: -35px;
