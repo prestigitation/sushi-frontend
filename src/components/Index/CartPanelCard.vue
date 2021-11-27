@@ -37,7 +37,7 @@
                 </div>
                 <div class="cart_total">
                     <span class="cart_total_price">{{totalPrice}}COM</span>
-                    <span class="carousel_product_button cart_button">Оформить заказ</span>
+                    <span class="carousel_product_button cart_button" @click.prevent="$router.push('/cart')">Оформить заказ</span>
                 </div>
             </div>
 

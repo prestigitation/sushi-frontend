@@ -8,9 +8,11 @@ export default {
     },
     change_product_cart_quantity(store, product) {
         let index = _.findIndex(store.getters.getCart, product)
-        console.log(index, product, store.getters.getCart[index])
         if (index != -1) {
             store.commit('change_cart_product', { index, product })
         }
+    },
+    logout(store) {
+        store.commit('logout')
     }
 }

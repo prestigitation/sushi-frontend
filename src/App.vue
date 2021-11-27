@@ -26,19 +26,21 @@ axios.defaults.baseURL = 'http://127.0.0.1:80/api/';
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.common["Access-Control-Allow-Methods"] = "GET, POST, PATCH, PUT, DELETE, OPTIONS",
 axios.defaults.headers.common["Access-Control-Allow-Headers"] = "Origin, Content-Type, X-Auth-Token"
-axios.interceptors.response.use(config => {
+axios.interceptors.request.use(config => {
   let access_token = localStorage.getItem("access_token")
   if(access_token) {
     config.headers.authorization = `Bearer ${access_token}`
   }
   return config
 },error => {
-  if(error.response.data.message == 'Token has expired') {
+  console.log(error)
+  if(error.response.data.status == 419) {
     return axios.post('auth/refresh', {}, {
       headers: {
         'authorization': `Bearer ${localStorage.getItem('access_token')}`
       }
     }).then(res => {
+      console.log('get new access_token')
       localStorage.setItem('access_token', res.data.access_token);
     })
   }

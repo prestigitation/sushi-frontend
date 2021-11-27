@@ -2,7 +2,7 @@
 <span class="quantity_selector">
     <span :class="['selector_action', {cart_selector: side_cart}]" v-if="show_minus" @click.prevent="decrementCount">-</span>
     <span :class="['selector_count']" v-if="show_count && !given_quantity">{{count}}</span>
-    <span v-else-if="given_quantity" :class="['selector_count', {cart_count: side_cart}]">{{given_quantity}} {{count}}</span>
+    <span v-else-if="given_quantity" :class="['selector_count', {cart_count: side_cart}]">{{given_quantity}}</span>
     <span :class="[{
         cart_selector: side_cart, 
         mobile_selector_action: !show_minus && !show_count,
@@ -40,12 +40,23 @@ export default {
     },
     methods: {
         decrementCount() {
-            if(this.count > 1) {
-                this.count -= 1
+            if(this.given_quantity && this.given_quantity > 1) { 
+                // если количество уже дано, применяем его к внутреннему состоянию селектора количества
+                this.count = --this.given_quantity
+            } else {
+                if(this.count > 1) {
+                    --this.count
+                }
             }
         },
         incrementCount() {
-            this.count++
+            if(this.given_quantity && this.given_quantity >= 1) {
+                this.count = ++this.given_quantity
+            } else {
+                if(this.count > 1) {
+                    ++this.count
+                }
+            }
         }
     },
     watch: {

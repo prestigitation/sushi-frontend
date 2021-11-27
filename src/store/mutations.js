@@ -17,5 +17,8 @@ export default {
     },
     clear(state) {
         state.cart = []
+    },
+    logout(state) {
+        state.user = {}
     }
 }

@@ -22,6 +22,7 @@
                     {{getUser.name}}
                 </div>
             </router-link>
+            <span @click.prevent="logout">Выйти</span>
         <img class="search_image" src="../../../public/img/Search.svg">
     </div>
 </div>
@@ -34,6 +35,14 @@ export default {
         ...mapGetters([
             'getUser'
         ])
+    },
+    methods: {
+        async logout() {
+            await this.axios.post('auth/logout').then(() => {
+                this.$store.dispatch('logout')
+                localStorage.removeItem('access_token')
+            }).catch((e) => {console.log(e)})
+        }
     }
 }
 </script>
