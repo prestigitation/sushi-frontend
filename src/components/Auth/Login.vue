@@ -34,6 +34,7 @@ export default {
                     this.$store.dispatch('auth_login', {
                         name: data.name,
                         id: data.id,
+                        role: data.role,
                     })
                     this.$router.push('/')
                 }

@@ -2,6 +2,7 @@ export default {
     change_user_data(state, user) {
         state.user.id = user.id;
         state.user.name = user.name;
+        state.user.role = user.role;
     },
     cart_add_product(state, product) {
         console.log(product)
@@ -15,10 +16,10 @@ export default {
         cart[data.index] = data.product
         state.cart = cart
     },
-    clear(state) {
-        state.cart = []
-    },
     logout(state) {
         state.user = {}
+    },
+    clear_cart(state) {
+        state.cart = []
     }
 }

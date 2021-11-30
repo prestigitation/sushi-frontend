@@ -7,17 +7,17 @@
     <div class="header_info">
         <div class="label">Отзывы</div>
         <div class="label">Доставка и оплата</div>
-            <router-link v-if="getUser == {} " class="router_link auth_link" to="/login">
+            <router-link v-if="!getUser" class="router_link auth_link" to="/login">
                 <div class="label">
                     Вход
                 </div>
             </router-link>
-            <router-link v-if="getUser == {} " class="router_link auth_link" to="/register">
+            <router-link v-if="!getUser" class="router_link auth_link" to="/register">
                 <div class="label">
                     Регистрация
                 </div>
             </router-link>
-            <router-link v-if="getUser != {} " class="router_link auth_link" :to="`/users/${getUser.id}`">
+            <router-link v-if="getUser && getUser.name" class="router_link auth_link" :to="`/users/${getUser.id}`">
                 <div class="label">
                     {{getUser.name}}
                 </div>

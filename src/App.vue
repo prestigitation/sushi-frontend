@@ -32,18 +32,30 @@ axios.interceptors.request.use(config => {
     config.headers.authorization = `Bearer ${access_token}`
   }
   return config
-},error => {
-  console.log(error)
-  if(error.response.data.status == 419) {
-    return axios.post('auth/refresh', {}, {
-      headers: {
-        'authorization': `Bearer ${localStorage.getItem('access_token')}`
-      }
-    }).then(res => {
-      console.log('get new access_token')
-      localStorage.setItem('access_token', res.data.access_token);
-    })
+})
+
+axios.interceptors.response.use((config) => {
+  let access_token = localStorage.getItem("access_token")
+  if(access_token) {
+    config.headers.authorization = `Bearer ${access_token}`
   }
+  return config
+},error => {
+    if(error.response.status == 401) {
+      axios.post('auth/refresh', {}, {
+        headers: {
+          'authorization': `Bearer ${localStorage.getItem('access_token')}`
+        }
+      }).then(res => {
+        localStorage.setItem('access_token', res.data.access_token);
+        error.config.headers.authorization = `Bearer ${res.data.access_token}`
+        return axios.request(error.config)
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
+    }
+  return Promise.reject(error)
 })
 export default {
   name: 'App',

@@ -1,6 +1,7 @@
 <template>
 <div class="cart_order_container">
-    <div class="cart_order_data">
+    <div v-if="!response_message">
+        <div class="cart_order_data">
         <div class="cart_order_header">Ваши данные</div>
         <div class="cart_order_grid_container">
             <div class="cart_grid">
@@ -86,11 +87,20 @@
         <span class="carousel_product_button cart_order_button" @click.prevent="sendOrder">Оформить заказ</span>
         <span class="cart_order_text">Нажимая на кнопку Оформить заказ, Вы подтверждаете свое согласие на обработку персональных данных в соответствии с Публичной оффертой</span>
     </div>
+    </div>
+    
+
+    <div v-else class="response_message label">
+        <span>{{response_message}}</span>
+        <div class="label" @click.prevent="$router.push('/')">
+            Вернуться на главную
+        </div>
+    </div>
 </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import CartAdjacentSelector from './CartAdjacentSelector.vue'
 export default {
     components: { CartAdjacentSelector },
@@ -106,9 +116,12 @@ export default {
             entrance: '',
             house_code: '',
             floor: '',
+            promocode: '',
             deliveryType: 1,
             paymentType: 1,
             timeType: 1,
+            
+            response_message: ''
         }
     },
     methods: {
@@ -137,15 +150,24 @@ export default {
             formData.append('payment_type', this.paymentType)
             formData.append('time_type', this.timeType)
             formData.append('cart', JSON.stringify(this.getCart))
+            formData.append('promocode', this.promocode)
             
-            await this.axios.post('order', formData)
-                                .then((response) => console.log(response))
-                                .catch((err) => console.log(err))
+            await this.axios.post('order', formData, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                }
+            }).then((response) => {
+                this.response_message = response.data.message
+                //this.clear_cart()
+            }).catch((err) => console.log(err))
         }
     },
     computed: {
         ...mapGetters([
             'getCart'
+        ]),
+        ...mapActions([
+            'clear_cart'
         ])
     }
 }
@@ -220,5 +242,9 @@ export default {
 .cart_order_text {
     text-align: center;
     display: flex;
+}
+.response_message {
+    text-align: center;
+    margin: 20px 0 20px 0;
 }
 </style>

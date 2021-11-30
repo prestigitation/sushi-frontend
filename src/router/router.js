@@ -8,7 +8,7 @@ let router = new VueRouter({
 router.beforeEach((to, from, next) => {
     let access_token = localStorage.getItem('access_token')
     if (to.name !== 'login') {
-        if (!access_token) {
+        if (!access_token && to.name != 'register') {
             return next({
                 name: 'login',
             })
