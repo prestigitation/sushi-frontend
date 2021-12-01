@@ -25,19 +25,9 @@ export default {
             if (this.$route.params.section && this.$route.params.action && !this.$route.params.id) {
                 return this.ucfirst(this.getUserRole()) + this.ucfirst(this.$route.params.section) + this.ucfirst(this.$route.params.action)
             } else if (this.$route.params.section && !this.$route.params.action && !this.$route.params.id) {
-                return this.ucfirst(this.$route.params.section)
+                return this.ucfirst(this.getUserRole()) + this.ucfirst(this.$route.params.section)
             } else if (this.$route.params.section && !this.$route.params.action && this.$route.params.id) {
-                switch (this.$route.name) {
-                    case 'update', 'delete':
-                        {
-                            return this.ucfirst(this.getUserRole()) + this.ucfirst(this.$route.params.section) + this.ucfirst(this.$route.name)
-                        }
-                    default:
-                        {
-                            this.$router.push('/')
-                            break
-                        }
-                }
+                return this.ucfirst(this.getUserRole()) + this.ucfirst(this.$route.params.section) + 'Entity'
             }
         }
     }

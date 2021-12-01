@@ -1,15 +1,17 @@
 <template>
-  <div class="page_container">
-    <SidePanel />
-    <div class="page_content">
-      <Header />
-      <div class="page_inner">
-        <router-view />
+  <v-app>
+    <div class="page_container">
+      <SidePanel />
+      <div class="page_content">
+        <Header />
+        <div class="page_inner">
+          <router-view />
+        </div>
+        <Footer />
       </div>
-      <Footer />
+      <CartSidePanel />
     </div>
-    <CartSidePanel />
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -21,6 +23,7 @@ import axios from 'axios'
 
 import './assets/style/index.css'
 import 'vue-horizontal-scroll/dist/vue-horizontal-scroll.css'
+import 'vuetify/dist/vuetify.min.css'
 
 axios.defaults.baseURL = 'http://127.0.0.1:80/api/';
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';

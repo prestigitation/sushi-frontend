@@ -39,9 +39,30 @@ export default [
                     show_footer_text: false
                 }
             },
-            { path: ':section', name: 'section', component: Section },
-            { path: ':section/:id/update', name: 'update', component: Update },
-            { path: ':section/:id/delete', name: 'delete', component: Delete },
+            {
+                path: ':section',
+                name: 'section',
+                component: Section,
+                meta: {
+                    show_footer_text: false
+                }
+            },
+            {
+                path: ':section/:id/update',
+                name: 'update',
+                component: Update,
+                meta: {
+                    show_footer_text: false
+                }
+            },
+            {
+                path: ':section/:id/delete',
+                name: 'delete',
+                component: Delete,
+                meta: {
+                    show_footer_text: false
+                }
+            },
         ]
     }
 ]
