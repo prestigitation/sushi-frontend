@@ -10,6 +10,8 @@
 <script>
 import dashboard_mapping from '../mixins/dashboard_mapping'
 import AdminOrder from './Admin/Orders/Order.vue'
+import CourierOrder from './Courier/Orders/Order.vue'
+import AdminUser from './Admin/Users/User.vue'
 export default {
     mixins: [dashboard_mapping],
     async beforeCreate() {
@@ -17,7 +19,10 @@ export default {
         // при отсутствии доступа к админке перенаправляем пользователя на главную
     },
     components: {
-        AdminOrder
+        AdminOrder,
+        AdminUser,
+
+        CourierOrder,
     },
     mounted() {
         console.log(this.dashboard_component)

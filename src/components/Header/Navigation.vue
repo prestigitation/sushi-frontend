@@ -41,6 +41,7 @@ export default {
             await this.axios.post('auth/logout').then(() => {
                 this.$store.dispatch('logout')
                 localStorage.removeItem('access_token')
+                this.$router.push('/')
             }).catch((e) => {console.log(e)})
         }
     }

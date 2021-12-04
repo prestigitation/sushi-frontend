@@ -4,7 +4,6 @@
     <div class="product_sort_button" 
         :class="{'active': selectedCategory !== category.changingSelector}" 
         @click.prevent="changeCurrentSortCategory(category.changingSelector)">
-        <!-- TODO: дописать логику получения данных с АПИ -->
         {{category.text}}
     </div>
 </div>

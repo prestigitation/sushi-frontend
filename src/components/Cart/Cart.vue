@@ -3,7 +3,7 @@
     <div v-if="!response_message">
         <div class="cart_order_data">
         <div class="cart_order_header">Ваши данные</div>
-        <div class="cart_order_grid_container">
+        <form method="post" class="cart_order_grid_container">
             <div class="cart_grid">
                 
                 <div class="cart_input_container">
@@ -81,10 +81,10 @@
                 />
 
             </div>
-        </div>
+        </form>
     </div>
     <div class="cart_order_policy">
-        <span class="carousel_product_button cart_order_button" @click.prevent="sendOrder">Оформить заказ</span>
+        <input type="submit" class="carousel_product_button cart_order_button" placeholder="Отправить заказ" @click.prevent="sendOrder">
         <span class="cart_order_text">Нажимая на кнопку Оформить заказ, Вы подтверждаете свое согласие на обработку персональных данных в соответствии с Публичной оффертой</span>
     </div>
     </div>
