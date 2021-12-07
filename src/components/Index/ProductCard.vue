@@ -256,6 +256,7 @@ export default {
     line-height: unset !important;
 }
 .recommendation_footer {
+    margin: 10px 0 0 0 !important;
     flex-direction: row !important;
     align-items: center !important;
     justify-content: space-around !important;

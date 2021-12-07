@@ -129,6 +129,7 @@ export default {
 .product_cards {
     display: flex;
     gap: 20px;
+    margin: 25px 0 0 0 !important;
 }
 .hide_desktop_arrows {
     display: none !important;

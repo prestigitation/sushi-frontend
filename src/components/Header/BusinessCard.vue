@@ -30,7 +30,7 @@ export default {
     }
     .business_card {
         padding: 10px;
-        width: 220px;
+        width: 240px;
         display: flex;
         justify-content: center;
         flex-direction: column;

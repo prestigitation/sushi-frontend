@@ -5,7 +5,7 @@
         <div class="label">Бишкек</div>
     </div>
     <div class="header_info">
-        <div class="label">Отзывы</div>
+        <div class="label" @click.prevent="$router.push('/comment')">Отзывы</div>
         <div class="label">Доставка и оплата</div>
             <router-link v-if="!getUser" class="router_link auth_link" to="/login">
                 <div class="label">

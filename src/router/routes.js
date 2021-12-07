@@ -9,6 +9,7 @@ import Section from '../components/Dashboard/Section.vue'
 import Action from '../components/Dashboard/Action.vue'
 import Update from '../components/Dashboard/Update.vue'
 import Delete from '../components/Dashboard/Delete.vue'
+import CommentPage from '../components/Comment/CommentPage.vue'
 
 export default [
     { path: '/', component: IndexPage, name: 'index' },
@@ -16,6 +17,7 @@ export default [
     { path: '/register', component: Register, name: 'register' },
     { path: '/category/:slug', component: Category, name: 'category' },
     { path: '/product/:slug', component: Product, name: 'product' },
+    { path: '/comment', component: CommentPage, name: 'comment' },
     {
         path: '/cart',
         component: Cart,

@@ -117,9 +117,22 @@ export default {
       }))
   },
   methods: {
-    changeCurrentSortCategory(category) {
+    async changeCurrentSortCategory(category) {
       this.selectedCategory = category
     },
+  },
+  watch: {
+    async selectedCategory(val) {
+      await this.axios.get("product/index_page/products_list", {
+        params: {
+          filter: val
+        }
+      }).then((({data}) => {
+        if(data) {
+          this.product_list_data = data.products
+        }
+      }))
+    }
   },
 }
 </script>

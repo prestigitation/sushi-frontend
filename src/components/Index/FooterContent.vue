@@ -61,6 +61,9 @@ export default {
 </script>
 
 <style scoped>
+    .footer_container {
+        margin: 20px 0 0 0 !important;
+    }
     .mobile_footer {
         display: none;
     }

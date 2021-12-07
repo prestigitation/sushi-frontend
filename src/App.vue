@@ -86,9 +86,9 @@ export default {
   .page_inner,
   .footer_container {
     /*width: 90%;*/
-    max-width: 950px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 950px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
   @media screen and (max-width:768px) {
     .page_inner {
